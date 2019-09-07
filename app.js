@@ -89,10 +89,15 @@ app.get('/todos/:id/edit', (req, res) => {
 })
 
 
-app.post('/todos/:id/edit', (req, res) => {
+app.post('/todos/:id', (req, res) => {
   Todo.findById(req.params.id, (err, todo) => {
     if (err) return console.error(err)
     todo.name = req.body.name
+    if (req.body.done === 'on') {
+      todo.done = true
+    } else {
+      todo.done = false
+    }
     todo.save(err => {
       if (err) return console.error(err)
       return res.redirect(`/todos/${req.params.id}`)
