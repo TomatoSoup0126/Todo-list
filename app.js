@@ -43,6 +43,7 @@ const Todo = require('./models/todo')
 //載入路由器
 app.use('/', require('./routes/home'))
 app.use('/todos', require('./routes/todo'))
+app.use('/users', require('./routes/user'))        // 新增的 user 路由器 
 
 app.listen(3000, () => {
   console.log('App is running!')
