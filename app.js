@@ -47,7 +47,8 @@ app.use(methodOverride('_method'))
 
 
 
-mongoose.connect('mongodb://localhost/todo', { useNewUrlParser: true })   // 設定連線到 mongoDB
+// mongoDB 連線
+mongoose.connect('mongodb://localhost/todo', { useNewUrlParser: true, useCreateIndex: true })
 
 // mongoose 連線後透過 mongoose.connection 拿到 Connection 的物件
 const db = mongoose.connection
