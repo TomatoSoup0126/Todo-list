@@ -12,12 +12,27 @@ const methodOverride = require('method-override')
 // 引用 express-handlebars
 const exphbs = require('express-handlebars');
 
+// 載入 passport
+const passport = require('passport')
+
 //設定express-session
 app.use(session({
   secret: 'your secret key',   // secret: 定義一組屬於你的字串做為私鑰
   resave: false,
   saveUninitialized: true,
 }))
+
+// 使用 Passport 
+app.use(passport.initialize())
+app.use(passport.session())
+
+// 載入 Passport config
+require('./config/passport')(passport)
+// 登入後可以取得使用者的資訊方便我們在 view 裡面直接使用
+app.use((req, res, next) => {
+  res.locals.user = req.user
+  next()
+})
 
 // 設定 bodyParser
 app.use(bodyParser.urlencoded({ extended: true }));
@@ -28,6 +43,8 @@ app.set('view engine', 'handlebars')
 
 // 設定 method-override
 app.use(methodOverride('_method'))
+
+
 
 mongoose.connect('mongodb://localhost/todo', { useNewUrlParser: true })   // 設定連線到 mongoDB
 
