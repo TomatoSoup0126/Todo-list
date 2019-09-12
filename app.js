@@ -1,6 +1,11 @@
 const express = require('express')
 const app = express()
 const mongoose = require('mongoose')                    // 載入 mongoose
+
+// 判別開發環境
+if (process.env.NODE_ENV !== 'production') {      // 如果不是 production 模式
+  require('dotenv').config()                      // 使用 dotenv 讀取 .env 檔案
+}
 const session = require('express-session')
 
 // 引用 body-parser
@@ -71,6 +76,7 @@ const Todo = require('./models/todo')
 app.use('/', require('./routes/home'))
 app.use('/todos', require('./routes/todo'))
 app.use('/users', require('./routes/user'))        // 新增的 user 路由器 
+app.use('/auth', require('./routes/auths'))
 
 app.listen(3000, () => {
   console.log('App is running!')
