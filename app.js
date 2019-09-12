@@ -1,6 +1,10 @@
 const express = require('express')
 const app = express()
 const mongoose = require('mongoose')                    // 載入 mongoose
+const flash = require('connect-flash')             // 載入 connect-flash   
+
+
+
 
 // 判別開發環境
 if (process.env.NODE_ENV !== 'production') {      // 如果不是 production 模式
@@ -30,6 +34,9 @@ app.use(session({
 // 使用 Passport 
 app.use(passport.initialize())
 app.use(passport.session())
+app.use(flash())                                                  // 使用 Connect flash
+
+
 
 // 載入 Passport config
 require('./config/passport')(passport)
@@ -37,8 +44,13 @@ require('./config/passport')(passport)
 app.use((req, res, next) => {
   res.locals.user = req.user
   res.locals.isAuthenticated = req.isAuthenticated()      // 辨識使用者是否已經登入的變數，讓 view 可以使用
+  // 新增兩個 flash message 變數 
+  res.locals.success_msg = req.flash('success_msg')
+  res.locals.warning_msg = req.flash('warning_msg')
   next()
 })
+
+
 
 // 設定 bodyParser
 app.use(bodyParser.urlencoded({ extended: true }));
